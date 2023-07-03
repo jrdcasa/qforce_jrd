@@ -151,8 +151,13 @@ class WriteGaussian(WriteABC):
         file.write(f"%nprocshared={config.n_proc}\n")
         file.write(f"%mem={config.memory}MB\n")
         file.write(f"%chk={job_name}_hessian.chk\n")
-        file.write(f"#Opt Freq {config.method} {config.dispersion} {config.basis} "
-                   f"pop=(CM5, ESP, NBOREAD) {config.solvent_method}\n\n")
+        if config.solvent_method is not None:
+            file.write(f"#p Opt Freq {config.method} {config.dispersion} {config.basis} "
+                       f"pop=(CM5, ESP, NBOREAD) {config.solvent_method}\n\n")
+        else:
+            file.write(f"#p Opt Freq {config.method} {config.dispersion} {config.basis} "
+                       f"pop=(CM5, ESP, NBOREAD)\n\n")
+
         file.write(f"{job_name}\n\n")
         file.write(f"{config.charge} {config.multiplicity}\n")
 
@@ -161,7 +166,11 @@ class WriteGaussian(WriteABC):
         file.write(f"%nprocshared={config.n_proc}\n")
         file.write(f"%mem={config.memory}MB\n")
         file.write(f"%chk={job_name}.chk\n")
-        file.write(f"#Opt=Modredundant {config.method} {config.dispersion} {config.basis} "
-                   f"pop=(CM5, ESP) {config.solvent_method}\n\n")
+        if config.solvent_method is not None:
+            file.write(f"#p Opt=Modredundant {config.method} {config.dispersion} {config.basis} "
+                       f"pop=(CM5, ESP) {config.solvent_method}\n\n")
+        else:
+            file.write(f"#p Opt=Modredundant {config.method} {config.dispersion} {config.basis} "
+                       f"pop=(CM5, ESP)\n\n")
         file.write(f"{job_name}\n\n")
         file.write(f"{charge} {multiplicity}\n")
